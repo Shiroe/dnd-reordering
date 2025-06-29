@@ -4,7 +4,7 @@ import { AppState } from "./useStore";
 
 type PageNavigationState = {
   activePage: number;
-  pages?: PageNavItem[];
+  pages: PageNavItem[] | [];
 };
 
 export interface PageNavItem {
@@ -16,34 +16,17 @@ export interface PageNavItem {
 
 export interface IPageNavigationSlice {
   pageNavigation: PageNavigationState;
-  // tipsCreator: TipCreatorState;
-  // /**
-  //  *
-  //  * @param newState sets the state of the tips creator
-  //  * otherwise toggles the state based on the previous status
-  //  * @returns
-  //  */
-  // toggleTipsCreator: (newState: Partial<TipCreatorState>) => void;
-  //
-  // /**
-  //  *
-  //  * @param newState sets the state of the tips creator
-  //  * with any data available at a time on the tip to be submitted
-  //  * @returns
-  //  */
-  // updateTipCreatorState: (newState: Partial<TipCreatorState>) => void;
-  //
-  // /**
-  //  * Resets the tips creator state to default
-  //  * @returns
-  //  */
-  // resetTipsCreator: () => void;
+  addPage: () => void;
+  removePage: (index: number) => void;
+  setPageOrder: (p: PageNavItem, index: number) => void;
 }
 
-// const DEFAULT_CREATOR_STATE: Partial<PageNavigationState> = {
-//   activePage: 0,
-//   pages: [],
-// };
+const DEFAULT_PAGES: PageNavItem[] = [
+  { name: "info", label: "Info", position: 0, icon: "info" },
+  { name: "details", label: "Details", position: 1, icon: "file" },
+  { name: "other", label: "Other", position: 2, icon: "file" },
+  { name: "ending", label: "Ending", position: 3, icon: "check" },
+];
 
 export const createPageNavigationSlice: StateCreator<
   AppState,
@@ -53,6 +36,24 @@ export const createPageNavigationSlice: StateCreator<
 > = (set, get) => ({
   pageNavigation: {
     activePage: 0,
-    pages: [],
+    pages: DEFAULT_PAGES,
   },
+  addPage() {
+    set((state) => ({
+      pageNavigation: {
+        ...state.pageNavigation,
+        pages: [
+          ...state.pageNavigation.pages,
+          {
+            name: "new_page",
+            label: "New Page",
+            icon: "file",
+            position: state.pageNavigation.pages?.length,
+          },
+        ],
+      },
+    }));
+  },
+  removePage(index) {},
+  setPageOrder(p, index) {},
 });
