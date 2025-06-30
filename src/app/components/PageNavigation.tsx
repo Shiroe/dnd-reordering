@@ -142,14 +142,14 @@ export default function PageNavigation() {
   useEffect(() => {
     if (!dragState.isDragging) return;
 
-    const handleDocumentDragOver = (e: DragEvent) => {
-      handleDragOver(e as any);
+    const handleDocumentDragOver = (e: globalThis.DragEvent) => {
+      handleDragOver(e as unknown as DragEvent<HTMLDivElement>);
     };
 
-    document.addEventListener("dragover", handleDocumentDragOver as any);
+    document.addEventListener("dragover", handleDocumentDragOver);
 
     return () => {
-      document.removeEventListener("dragover", handleDocumentDragOver as any);
+      document.removeEventListener("dragover", handleDocumentDragOver);
     };
   }, [dragState.isDragging, handleDragOver]);
 
